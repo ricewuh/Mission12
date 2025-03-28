@@ -7,7 +7,7 @@ function BookList({ selectedCategories }: { selectedCategories: string[] }) {
   const [pageSize, setPageSize] = useState<number>(10);
   const [pageNum, setPageNum] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
-  const { addToCart } = useCart(); // ✅ Use cart context
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -29,59 +29,77 @@ function BookList({ selectedCategories }: { selectedCategories: string[] }) {
 
   return (
     <>
-      {books.map((b) => (
-        <div id="bookCard" className="card mb-3" key={b.bookId}>
-          <h3 className="card-title">{b.title}</h3>
-          <div className="card-body">
-            <ul className="list-unstyled">
-              <li><strong>Author:</strong> {b.author}</li>
-              <li><strong>Publisher:</strong> {b.publisher}</li>
-              <li><strong>ISBN:</strong> {b.isbn}</li>
-              <li><strong>Classification:</strong> {b.classification}</li>
-              <li><strong>Category:</strong> {b.category}</li>
-              <li><strong>Page Count:</strong> {b.pageCount}</li>
-              <li><strong>Price:</strong> ${b.price}</li>
-            </ul>
-            <button
-              className="btn btn-success"
-              onClick={() =>
-                addToCart({
-                  bookId: b.bookId,
-                  title: b.title,
-                  quantity: 1,
-                  price: b.price,
-                })
-              }
-            >
-              Add to Cart
-            </button>
+      {/* Bootstrap Grid: .row and .col-md-6 .col-lg-4 */}
+      <div className="row">
+        {books.map((b) => (
+          <div key={b.bookId} className="col-md-6 col-lg-4 mb-4">
+            <div id="bookCard" className="card shadow h-100">
+              <div className="card-body d-flex flex-column">
+                <h5 className="card-title mb-3">{b.title}</h5>
+                <ul className="list-unstyled flex-grow-1">
+                  <li><strong>Author:</strong> {b.author}</li>
+                  <li><strong>Publisher:</strong> {b.publisher}</li>
+                  <li><strong>ISBN:</strong> {b.isbn}</li>
+                  <li><strong>Classification:</strong> {b.classification}</li>
+                  <li><strong>Category:</strong> {b.category}</li>
+                  <li><strong>Pages:</strong> {b.pageCount}</li>
+                  <li><strong>Price:</strong> ${b.price.toFixed(2)}</li>
+                </ul>
+                <button
+                  className="btn btn-success mt-auto"
+                  onClick={() =>
+                    addToCart({
+                      bookId: b.bookId,
+                      title: b.title,
+                      quantity: 1,
+                      price: b.price,
+                    })
+                  }
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
 
+      {/* Pagination Controls */}
       <div className="mb-3">
-        <button disabled={pageNum === 1} onClick={() => setPageNum(pageNum - 1)}>
+        <button
+          className="btn btn-outline-secondary me-2"
+          disabled={pageNum === 1}
+          onClick={() => setPageNum(pageNum - 1)}
+        >
           Previous
         </button>
 
         {[...Array(totalPages)].map((_, i) => (
           <button
             key={i + 1}
+            className={`btn me-1 ${
+              pageNum === i + 1 ? "btn-primary" : "btn-outline-primary"
+            }`}
             onClick={() => setPageNum(i + 1)}
-            disabled={pageNum === i + 1}
           >
             {i + 1}
           </button>
         ))}
 
-        <button disabled={pageNum === totalPages} onClick={() => setPageNum(pageNum + 1)}>
+        <button
+          className="btn btn-outline-secondary ms-2"
+          disabled={pageNum === totalPages}
+          onClick={() => setPageNum(pageNum + 1)}
+        >
           Next
         </button>
       </div>
 
+      {/* Page Size Selector (Bootstrap-styled) */}
       <label>
         Results per page:{" "}
         <select
+          className="form-select d-inline w-auto"
           value={pageSize}
           onChange={(p) => {
             setPageSize(Number(p.target.value));
