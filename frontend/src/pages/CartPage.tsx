@@ -5,28 +5,59 @@ import { CartItem } from '../types/CartItem';
 function CartPage() {
   const navigate = useNavigate();
   const { cart, removeFromCart } = useCart();
+
+  const total = cart.reduce(
+    (sum, item) => sum + item.quantity * item.price,
+    0
+  );
+
   return (
-    <div>
-      <h2>Your cart</h2>
-      <div>
-        {cart.length === 0 ? (
-          <p>Your cart is empty.</p>
-        ) : (
-          <ul>
-            {cart.map((item: CartItem) => (
-              <li key={item.projectId}>
-                {item.projectName}: ${item.donationAmount.toFixed(2)}
-                <button onClick={() => removeFromCart(item.projectId)}>
-                  Remove
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-      <h3>Total: </h3>
-      <button>Checkout</button>
-      <button onClick={() => navigate('/projects')}>Continue Browsing</button>
+    <div className="container mt-4">
+      <h2>Your Cart</h2>
+      {cart.length === 0 ? (
+        <p>Your cart is empty.</p>
+      ) : (
+        <>
+          <table className="table table-bordered">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Subtotal</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {cart.map((item: CartItem) => (
+                <tr key={item.bookId}>
+                  <td>{item.title}</td>
+                  <td>{item.quantity}</td>
+                  <td>${item.price.toFixed(2)}</td>
+                  <td>${(item.quantity * item.price).toFixed(2)}</td>
+                  <td>
+                    <button
+                      className="btn btn-sm btn-danger"
+                      onClick={() => removeFromCart(item.bookId)}
+                    >
+                      Remove
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          
+
+          <h4>Total: ${total.toFixed(2)}</h4>
+          <button className="btn btn-success me-2">Checkout</button>
+        </>
+      )}
+      <button
+        className="btn btn-secondary"
+        onClick={() => navigate('/')} >Continue Shopping
+      </button>
     </div>
   );
 }

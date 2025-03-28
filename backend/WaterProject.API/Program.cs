@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using WaterProject.API.Data;
+using WaterProject.API.Data;
+using WaterProject.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +12,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<WaterDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("WaterConnection")));
+builder.Services.AddDbContext<BookDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("BookConnection")));
 
 builder.Services.AddCors();
 
