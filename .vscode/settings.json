@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "undefined/subscriptions/bd87bc2f-2b7c-4924-b2c1-8d364e20b6d6/resourceGroups/appsvc_windows_centralus/providers/Microsoft.Web/sites/BookStore-Joseph-Backend",
+    "appService.deploySubpath": "backend/WaterProject.API/publish"
+}
