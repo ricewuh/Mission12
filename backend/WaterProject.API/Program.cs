@@ -15,18 +15,31 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<BookDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("BookConnection")));
 
-builder.Services.AddCors();
-
+// Allow specific origins and methods
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:3000") // Your React app origin
+            .WithHeaders("Content-Type")
+            // .AllowAnyHeader() // Accept headers like Content-Type
+            .AllowAnyMethod(); // Accept GET, POST, PUT, DELETE, etc.
+    });
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseCors(x => x.WithOrigins("http://localhost:3000"));
+// app.UseCors(x => x.WithOrigins("http://localhost:3000"));
+
+app.UseCors("AllowReactApp");
 
 app.UseHttpsRedirection();
 

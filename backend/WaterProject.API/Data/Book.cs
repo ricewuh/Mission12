@@ -21,6 +21,9 @@ namespace WaterProject.API.Data
 
         [Required]
         public string Category { get; set; }
+        
+        [Required]
+        public string Classification { get; set; } = string.Empty;
 
         [Required]
         public int PageCount { get; set; }

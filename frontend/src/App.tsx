@@ -1,22 +1,29 @@
 import './App.css';
-import { CartProvider } from './context/CartContext';
-import CartPage from './pages/CartPage';
-import BooksPage from './pages/BooksPage';  
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import CartSummary from './components/CartSummary'; 
+import { CartProvider } from './context/CartContext';
+import BooksPage from './pages/BooksPage';
+import CartPage from './pages/CartPage';
+import AdminBooksPage from './pages/AdminBooksPage';
+import BookForm from './pages/BookForm';
+import CartSummary from './components/CartSummary';
+
 
 function App() {
   return (
     <CartProvider>
       <Router>
-
-        <CartSummary />
+      <CartSummary />
         <Routes>
+          {/* Public Pages */}
           <Route path="/" element={<BooksPage />} />
           <Route path="/cart" element={<CartPage />} />
+
+          {/* Admin Pages */}
+          <Route path="/adminbooks" element={<AdminBooksPage />} />
+          <Route path="/adminbooks/new" element={<BookForm />} />
+          <Route path="/adminbooks/edit/:id" element={<BookForm />} />
         </Routes>
       </Router>
-      
     </CartProvider>
   );
 }
